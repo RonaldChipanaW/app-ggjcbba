@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../src/assets/LogoGGJC.svg';
-import f1 from '../src/assets/foto1.jpg';
+import p1 from '../src/assets/foto1.jpg';
+import f1 from '../src/assets/f1.jpg';
+import f2 from '../src/assets/f2.jpg';
+import f3 from '../src/assets/f3.jpg';
 import { 
   Gamepad2, 
   Code2, 
@@ -13,7 +16,9 @@ import {
   Terminal,
   Menu,
   X,
-  Rocket
+  Rocket,
+  Star,
+  Heart
 } from 'lucide-react';
 
 // --- ESTILOS PERSONALIZADOS & ANIMACIONES ---
@@ -131,6 +136,95 @@ const Card = ({ children, title, icon: Icon, delay = 0 }: { children: React.Reac
   </div>
 );
 
+
+// --- SECCIÓN: WOMEN GAME JAM (Slider Automático) ---
+
+const WomenGameJamSection = () => {
+  // --- EDITA ESTOS LINKS CON TUS IMÁGENES ---
+  const images = [
+    f1, 
+    f2, 
+    f3
+  ];
+  
+  const [currentImg, setCurrentImg] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImg((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <section className="py-24 px-6 max-w-7xl mx-auto overflow-hidden">
+      <div className="grid lg:grid-cols-2 gap-16 items-center">
+        {/* Texto e Información */}
+        <div className="fade-in-up">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-400 font-mono text-xs mb-8">
+            <Heart size={14} className="fill-pink-500" />
+            <span>Iniciativa de Inclusión</span>
+          </div>
+          <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white leading-tight">
+            ¿Qué es el <br/>
+            <span className="text-pink-500 text-glow-pink italic">Global Game Jam</span>?
+          </h2>
+          <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-10">
+            La Global Game Jam (GGJ) es un evento único que se celebra simultáneamente en todo el mundo ¡Este año serán tres días de pura diversión!
+          </p>
+          <div className="flex flex-wrap gap-6">
+             <div className="flex items-center gap-4 text-slate-300 glass-card p-4 rounded-xl border-pink-500/20">
+                <div className="bg-pink-500/20 p-2 rounded-lg text-pink-400"><Star size={20} /></div>
+                <span className="font-medium">Espacio Seguro</span>
+             </div>
+             <div className="flex items-center gap-4 text-slate-300 glass-card p-4 rounded-xl border-pink-500/20">
+                <div className="bg-pink-500/20 p-2 rounded-lg text-pink-400"><Users size={20} /></div>
+                <span className="font-medium">Comunidad Activa</span>
+             </div>
+          </div>
+        </div>
+
+        {/* Slider con Animación de Zoom y Fade */}
+        <div className="relative h-[500px] w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-pink-500/10">
+          {images.map((img, idx) => (
+            <div
+              key={idx}
+              className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+                idx === currentImg ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-110 z-0'
+              }`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-60"></div>
+              <img 
+                src={img} 
+                alt={`Women Jam ${idx}`} 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-10 left-10 z-20">
+                <span className="font-mono text-xs text-pink-400 bg-black/60 px-3 py-1 rounded backdrop-blur-sm">
+                  MEMORIA_SISTEMA :: 0{idx + 1}
+                </span>
+              </div>
+            </div>
+          ))}
+          
+          {/* Indicadores Minimalistas */}
+          <div className="absolute bottom-10 right-10 z-20 flex gap-3">
+            {images.map((_, idx) => (
+              <button 
+                key={idx}
+                onClick={() => setCurrentImg(idx)}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  idx === currentImg ? 'w-10 bg-pink-500' : 'w-3 bg-white/20 hover:bg-white/40'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // --- PÁGINAS ---
 
 const HomePage = ({ navigate }: { navigate: (page: string) => void }) => {
@@ -143,7 +237,7 @@ const HomePage = ({ navigate }: { navigate: (page: string) => void }) => {
         <div className="absolute inset-0 w-full h-full z-0 select-none pointer-events-none">
             {/* Imagen de fondo */}
             <img 
-              src={f1} 
+              src={p1} 
               alt="Background Ambient" 
               className="w-full h-full object-cover opacity-60 mix-blend-screen grayscale-[30%]"
             />
@@ -157,13 +251,15 @@ const HomePage = ({ navigate }: { navigate: (page: string) => void }) => {
             <div className="mb-4 inline-block px-4 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 font-mono text-sm animate-pulse">
             &lt; System.Ready /&gt;
             </div>
+
+            <img className="size-80" src={logo} alt="" />
             
-            <h1 className="text-5xl md:text-8xl font-bold mb-6 tracking-tighter text-white drop-shadow-2xl">
+{/*             <h1 className="text-2xl md:text-4xl font-bold mb-6 tracking-tighter text-white drop-shadow-2xl">
             GLOBAL GAME JAM
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 text-glow mt-2">
                 COCHABAMBA 2026
             </span>
-            </h1>
+            </h1> */}
             
             <p className="text-lg md:text-xl text-slate-300 max-w-2xl mb-10 font-light drop-shadow-md">
             48 horas para crear, colaborar e innovar. El evento de desarrollo de videojuegos más grande del mundo aterriza en la Llajta.
@@ -183,8 +279,11 @@ const HomePage = ({ navigate }: { navigate: (page: string) => void }) => {
             <Gamepad2 size={120} className="text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
             </div>
         </div>
-      </section>
 
+
+      </section>
+            {/* Sección Women Game Jam */}
+            <WomenGameJamSection />
       {/* Info Stats */}
       <section className="py-20 px-4 md:px-10 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
